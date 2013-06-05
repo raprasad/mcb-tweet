@@ -5,17 +5,18 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 
-from mcb_website.utils.view_util import get_common_lookup, is_user_in_group
+from tweet_util.group_util import is_user_in_group
 from tweet_mcb.forms import TweetForm
 from tweet_util.url_shortener import shorten_url
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 
-
+TITLE_KEY = 't'
+SHORT_URL_KEY = 'su'
 def view_tweet_success(request):
     return view_tweet_console(request, success_msg=True)
     
-    
+#def view_news_tweet(request):
     
 TWEET_GROUP_NAME = 'TWEET_GROUP'
 def view_tweet_console(request, **kwargs):
@@ -43,8 +44,16 @@ def view_tweet_console(request, **kwargs):
             print 'NOT valid!'
             lu.update({ 'ERR_form_not_valid' : True })
     else: 
-        tweet_form = TweetForm()#**kw={ 'resources' : resources})
-
+        if kwargs.has_key('title'):
+            form_data = { 'message': kwargs.get('title', '')\
+                        , 'hashtag' : 'MCB_News'\
+                        , 'link' : kwargs.get('short_url', '') \
+                        }
+            print 'form_data', form_data
+            tweet_form = TweetForm(form_data)
+        else:
+            tweet_form = TweetForm()
+            
     lu.update({ 'tweet_form' : tweet_form\
         #,   'my_checked_codes' : get_previously_checked_expense_codes(request)\
      })
@@ -70,6 +79,7 @@ def view_upcoming_events(request):
 
     return render_to_response('tweet/tweet_console.html', lu, context_instance=RequestContext(request))
 
+    
 
 def view_ajax_shorten_url(request):
     

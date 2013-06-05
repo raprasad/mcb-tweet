@@ -10,6 +10,13 @@ urlpatterns = patterns(
     , url(r'^upcoming-events/$', 'view_upcoming_events', name='view_upcoming_events')
 
     , url(r'^shorten-url/$', 'view_ajax_shorten_url', name='view_ajax_shorten_url')
-    ,
+
+)
+
+urlpatterns += patterns(
+    'tweet_mcb.views_news'
+ 
+    , url(r'^news/$', 'view_news_tweet', name='view_news_tweet')
+    
 )
 
