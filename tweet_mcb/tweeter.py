@@ -20,7 +20,7 @@ def post_new_tweet(new_tweet):
                    + (settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET))
 
     tweet_conn = Twitter( auth=oauth\
-                    , api_version='1')
+                    , api_version='1.1')
     
     # authentication
     #new_tweet = "%s %s #%s" % (description, short_url, hashtag)
