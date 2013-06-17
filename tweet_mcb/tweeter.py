@@ -1,7 +1,7 @@
 from django.conf import settings
 from twitter import *
 import urllib
-import httplib2
+#import httplib2
 import json
 from twitter import Twitter, NoAuth, OAuth, read_token_file, TwitterHTTPError
 
