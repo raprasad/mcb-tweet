@@ -27,14 +27,13 @@ def view_tweet_console(request, **kwargs):
     lu = { 'page_title' : 'Send MCB Tweet'\
             , 'TWEET_SUCCESS' : kwargs.get('success_msg', False)
       }
-     
         
     if not request.user.is_authenticated():
         return HttpResponse('not logged in')
     
     if not is_user_in_group(request, TWEET_GROUP_NAME):
         return HttpResponse('not in tweet group')
-
+    #    
     if request.method=='POST':        
         tweet_form = TweetForm(request.POST)
         if tweet_form.is_valid():
@@ -57,7 +56,7 @@ def view_tweet_console(request, **kwargs):
     lu.update({ 'tweet_form' : tweet_form\
         #,   'my_checked_codes' : get_previously_checked_expense_codes(request)\
      })
-
+    #
     return render_to_response('tweet/tweet_console.html', lu, context_instance=RequestContext(request))
 
 def view_upcoming_events(request):
@@ -70,14 +69,13 @@ def view_upcoming_events(request):
       
     if not request.user.is_authenticated():
         return HttpResponse('not logged in')
-    
+    #
     if not is_user_in_group(request, TWEET_GROUP_NAME):
         return HttpResponse('not in tweet group')
-
-
+    #    
     return HttpResponse('view_upcoming_events')
 
-    return render_to_response('tweet/tweet_console.html', lu, context_instance=RequestContext(request))
+    #return render_to_response('tweet/tweet_console.html', lu, context_instance=RequestContext(request))
 
     
 
@@ -85,10 +83,10 @@ def view_ajax_shorten_url(request):
     
     if not request.user.is_authenticated():
         return HttpResponse('not logged in')
-
+    #
     if not is_user_in_group(request, TWEET_GROUP_NAME):
         return HttpResponse('not in tweet group')
-
+    #    
     if not request.GET.has_key('lnk'):
         json_response = { 'success' : 0, 'err_msg':'Link not found'}
         return HttpResponse(json.dumps(json_response), mimetype="application/json")
