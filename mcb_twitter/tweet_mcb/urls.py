@@ -14,7 +14,7 @@ urlpatterns = patterns(
 )
 
 urlpatterns += patterns(
-    'tweet_mcb.views_news'
+    'mcb_twitter.tweet_mcb.views_news'
  
     , url(r'^news/$', 'view_news_tweet', name='view_news_tweet')
     
