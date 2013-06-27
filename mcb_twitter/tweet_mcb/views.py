@@ -37,7 +37,7 @@ def view_tweet_console(request, **kwargs):
     if request.method=='POST':        
         tweet_form = TweetForm(request.POST)
         if tweet_form.is_valid():
-            #tweet_form.send_tweet()
+            tweet_form.send_tweet()
             return HttpResponseRedirect(reverse('view_tweet_success', args=()))
         else:
             print 'NOT valid!'
