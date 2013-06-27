@@ -5,9 +5,9 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 
-from tweet_util.group_util import is_user_in_group
-from tweet_mcb.forms import TweetForm
-from tweet_util.url_shortener import shorten_url
+from mcb_twitter.tweet_util.group_util import is_user_in_group
+from mcb_twitter.tweet_mcb.forms import TweetForm
+from mcb_twitter.tweet_util.url_shortener import shorten_url
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 

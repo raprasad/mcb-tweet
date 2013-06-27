@@ -1,6 +1,6 @@
 from django import forms
 from django.conf import settings
-from tweet_mcb.tweeter import post_new_tweet
+from mcb_twitter.tweet_mcb.tweeter import post_new_tweet
 
 MAX_TWEET_SIZE = 140
 class TweetForm(forms.Form):
