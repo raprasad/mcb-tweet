@@ -6,9 +6,23 @@ import json
 from twitter import Twitter, NoAuth, OAuth, read_token_file, TwitterHTTPError
 
 # https://github.com/sixohsix/twitter/blob/master/tests/test_sanity.py
+
+def assemble_full_tweet(description, short_url='', hashtag=''):
+    parts = [description, short_url, hashtag]
+    parts = filter(lambda x: x is not None and len(x.strip())>0, parts)
+    if len(parts) == 0:
+        return None
+    parts = map(lambda x: x.strip(), parts)
+    
+    full_tweet = ' '.join(parts)
+    
+    return full_tweet
+    
 def post_new_tweet_as_parts(description, short_url, hashtag):
-    new_tweet = "%s %s %s" % (description, short_url, hashtag)
-    new_tweet = new_tweet.strip()
+    new_tweet = assemble_full_tweet(description, short_url, hashtag)
+    if new_tweet is None:
+        return None
+        
     post_new_tweet(new_tweet)
 
 def post_new_tweet(new_tweet):

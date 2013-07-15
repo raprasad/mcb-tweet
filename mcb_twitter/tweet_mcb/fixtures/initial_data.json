@@ -1,0 +1,38 @@
+[
+    {
+        "pk": 1,
+        "model": "tweet_mcb.tweetstatus",
+        "fields": {
+            "sort_key": 1,
+            "name": "Awaiting Approval (or Rejection)",
+            "description": ""
+        }
+    },
+    {
+        "pk": 2,
+        "model": "tweet_mcb.tweetstatus",
+        "fields": {
+            "sort_key": 2,
+            "name": "APPROVED",
+            "description": ""
+        }
+    },
+    {
+        "pk": 3,
+        "model": "tweet_mcb.tweetstatus",
+        "fields": {
+            "sort_key": 3,
+            "name": "REJECTED",
+            "description": ""
+        }
+    },
+    {
+        "pk": 4,
+        "model": "tweet_mcb.tweetstatus",
+        "fields": {
+            "sort_key": 4,
+            "name": "TWEETED",
+            "description": ""
+        }
+    }
+]
