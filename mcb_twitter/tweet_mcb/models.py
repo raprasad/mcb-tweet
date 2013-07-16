@@ -4,12 +4,15 @@ from django.core.urlresolvers import reverse
 from mcb_website.events.models import CalendarEvent
 from mcb_twitter.tweet_mcb.tweeter import assemble_full_tweet
 
+from datetime import datetime
+
 TWEET_STATUS_PK_AWAITING_APPROVAL = 1
 TWEET_STATUS_PK_APPROVED = 2
 TWEET_STATUS_PK_REJECTED = 3
 TWEET_STATUS_PK_TWEETED = 4
 
 
+TWEET_GROUP_NAME = 'TWEET_GROUP'
 
 class TweetStatus(models.Model):
     name = models.CharField(max_length=200, unique=True)
@@ -41,6 +44,13 @@ class MCBTweetEvent(models.Model):
     tweet_short_url = models.URLField(max_length=75, blank=True)
     
     full_tweet = models.CharField(max_length=255, blank=True, help_text='auto-filled on save')
+    
+    @staticmethod
+    def get_events_awaiting_approval():
+        return MCBTweetEvent.objects.filter(tweet_pubdate__gt=datetime.now()\
+                                    , status=TweetStatus.objects.get(pk=TWEET_STATUS_PK_AWAITING_APPROVAL)\
+                                    ).all().order_by('tweet_pubdate')
+        
     
     @staticmethod
     def create_tweet_from_calendar_event(cal_event):

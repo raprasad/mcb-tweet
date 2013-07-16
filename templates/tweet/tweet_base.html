@@ -48,8 +48,8 @@
           <a class="brand" href="#">mcb tweets</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="{% url 'view_upcoming_events' %}">Event Approval List</a></li>
+              <li class="active"><a href="{% url 'view_tweet_console' %}">Home</a></li>
+              <li><a href="{% url 'view_event_list' %}">Event Approval List</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -67,10 +67,13 @@
       {% endblock %}
       </div>
 
+      {% if include_twitter_widget %}
       <div style="float:left; width:300px;margin:40px 0 0 80px;">
           {% include "tweet/twitter_widget.js" %}  		
       </div>
-      <div class="style:clear:both;"></div>
+      {% endif %}
+      <div style="clear:both;"></div>
+      <p><small>({% now "F jS, Y f:s a" %})</small></p>
     </div> <!-- /container -->
 
     <!-- Le javascript

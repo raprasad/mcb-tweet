@@ -1,0 +1,110 @@
+{% extends "tweet/tweet_base.html" %}
+{% load url from future %}
+
+{% block additional_header_info %}
+{{ block.super }}
+<script src="{{ STATIC_URL }}tweet_assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="{{ STATIC_URL }}tweet_assets/bootstrap/js/bootstrap-limit.js"></script>
+<style type="text/css">
+#id_tbl_evt_list th {text-align:center;}
+a.btn{cursor:hand;}
+</style>
+<script type="text/javascript">
+
+function shorten_url(){
+    // reset error message div
+    $('#url_shorten_err_msg').html('');
+    $('#url_shorten_err_msg').hide();
+    
+    lnk_val = $('#id_link').val();
+    if (lnk_val.length == 0){
+        return;
+    }
+    if (lnk_val.length < 20){
+        alert('The url doesn\'t need shortening');
+        return;
+    }
+    
+    url_str = "{% url 'view_ajax_shorten_url' %}?lnk=" + lnk_val;
+
+    jQuery.ajax({
+      url: url_str,
+      success: function(data) {
+          if (data.success == 1){
+              //alert('new url ' + data.short_url );   
+              $('#id_link').val(data.short_url);           
+          }else{
+              $('#url_shorten_err_msg').html(data.err_msg);
+              $('#url_shorten_err_msg').show();              
+          }
+      }
+    })
+}
+
+
+
+    $(function () {
+    
+        $('a.schedule-tweet').click(function(){
+      			evt_row_info = this.rel.split('|');
+      			msg = "event: " + evt_row_info[0] + "   row: " +  evt_row_info[1];
+      			$(this).text(msg);
+      			$('#reject' + evt_row_info[0]).hide();
+      			$(this).unbind('click');
+      		});
+
+        $('a.reject-tweet').click(function(){
+      			evt_row_info = this.rel.split('|');
+      			msg = "bummer... event: " + evt_row_info[0] + "   row: " +  evt_row_info[1];
+      			$(this).text(msg);
+      			
+      			$('#schedule' + evt_row_info[0]).hide();
+      			$(this).unbind('click');
+      			
+      		});
+        
+
+        /*$('a#lnk_shorten_url').click(function(){
+            shorten_url();
+        })
+        
+        $('#url_shorten_err_msg').hide();
+        */
+   });
+
+</script>
+{% endblock %}
+
+
+{% block main_container %}
+<div id="id_tweet_msg"></div>
+{% if upcoming_events %}
+    <table class="table table-bordered table-hover" style="width:650px;" id="id_tbl_evt_list">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Tweet Date</th>
+                <th>Tweet</th>
+                <th>Approve</th>
+                <th>Reject</th>
+            </tr>
+        </thead>
+    {% for event in upcoming_events %}
+        <tbody>
+            <tr id="row_{{ forloop.counter }}">
+                <td>{{ forloop.counter }}</td>
+                <td>{{ event.tweet_pubdate|date:"n/d/Y" }}
+                    <br />{{ event.tweet_pubdate|date:"f:s a" }}
+                    </td>
+                <td>{{ event.tweet_text }}</td>
+                <td><a id="schedule{{ event.id }}" rel="{{ event.id }}|row_{{ forloop.counter }}" class="btn btn-small btn-success schedule-tweet">Schedule</a></td>
+                <td><a id="reject{{ event.id }}" rel="{{ event.id }}|row_{{ forloop.counter }}" class="btn btn-small btn-danger reject-tweet">Reject</a></td>
+            </tr>
+        </tbody>
+    {% endfor %}
+    </table>
+{% endif %}
+{% endblock %}
+
+
+

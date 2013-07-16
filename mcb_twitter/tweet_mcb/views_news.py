@@ -2,7 +2,8 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from mcb_twitter.tweet_util.group_util import is_user_in_group
-from mcb_twitter.tweet_mcb.views import view_tweet_console, TWEET_GROUP_NAME, TITLE_KEY, SHORT_URL_KEY 
+from mcb_twitter.tweet_mcb.models import TWEET_GROUP_NAME
+from mcb_twitter.tweet_mcb.views import view_tweet_console, TITLE_KEY, SHORT_URL_KEY 
 
 def get_tweet_news_url(title, short_url=''):
     if title is None:

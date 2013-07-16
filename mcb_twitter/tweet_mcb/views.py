@@ -10,6 +10,7 @@ from mcb_twitter.tweet_mcb.forms import TweetForm
 from mcb_twitter.tweet_util.url_shortener import shorten_url
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+from mcb_twitter.tweet_mcb.models import TWEET_GROUP_NAME
 
 TITLE_KEY = 't'
 SHORT_URL_KEY = 'su'
@@ -18,14 +19,14 @@ def view_tweet_success(request):
     
 #def view_news_tweet(request):
     
-TWEET_GROUP_NAME = 'TWEET_GROUP'
 def view_tweet_console(request, **kwargs):
     """
     Success page after report form has been filled out.
     """
     #lu = get_common_lookup(request)
     lu = { 'page_title' : 'Send MCB Tweet'\
-            , 'TWEET_SUCCESS' : kwargs.get('success_msg', False)
+            , 'TWEET_SUCCESS' : kwargs.get('success_msg', False)\
+            , 'include_twitter_widget' : True
       }
         
     if not request.user.is_authenticated():
@@ -59,25 +60,6 @@ def view_tweet_console(request, **kwargs):
     #
     return render_to_response('tweet/tweet_console.html', lu, context_instance=RequestContext(request))
 
-def view_upcoming_events(request):
-    """
-    Success page after report form has been filled out.
-    """
-    #lu = get_common_lookup(request)
-    lu = { 'page_title' : 'Send MCB Tweet'\
-      }
-      
-    if not request.user.is_authenticated():
-        return HttpResponse('not logged in')
-    #
-    if not is_user_in_group(request, TWEET_GROUP_NAME):
-        return HttpResponse('not in tweet group')
-    #    
-    return HttpResponse('view_upcoming_events')
-
-    #return render_to_response('tweet/tweet_console.html', lu, context_instance=RequestContext(request))
-
-    
 
 def view_ajax_shorten_url(request):
     
