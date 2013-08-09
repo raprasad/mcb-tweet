@@ -109,7 +109,9 @@ a.btn{cursor:hand;}
                 <td>{{ event.tweet_pubdate|date:"n/d/Y" }}
                     <br />{{ event.tweet_pubdate|date:"f:s a" }}
                     </td>
-                <td>{{ event.tweet_text }}</td>
+                <td>{{ event.full_tweet }}
+                    <br />
+                    </td>
                 <td><a id="schedule{{ event.id }}" rel="{{ event.id }}|row_{{ forloop.counter }}" class="btn btn-small btn-info schedule-tweet">Schedule Tweet</a></td>
                 <td><a id="reject{{ event.id }}" rel="{{ event.id }}|row_{{ forloop.counter }}" class="btn btn-small btn-warning reject-tweet">Reject Tweet</a></td>
             </tr>

@@ -44,7 +44,21 @@ class MCBTweetEvent(models.Model):
     tweet_short_url = models.URLField(max_length=75, blank=True)
     
     full_tweet = models.CharField(max_length=255, blank=True, help_text='auto-filled on save')
-    
+
+    def view_calendar_event(self):
+        if not self.mcb_event:
+            return 'n/a'
+        url = reverse('admin:events_calendarevent_change', args=(self.mcb_event.id,))
+        return '<a href="%s">view calendar event</a>' % url
+        
+    view_calendar_event.allow_tags = True
+
+    def set_tweet_to_awaiting_approval_without_save(self):
+        try:
+            self.status = TweetStatus.objects.get(pk=TWEET_STATUS_PK_AWAITING_APPROVAL)
+        except:
+            pass
+                
     def approve_tweet_without_save(self):
         try:
             self.status = TweetStatus.objects.get(pk=TWEET_STATUS_PK_APPROVED)
@@ -57,6 +71,11 @@ class MCBTweetEvent(models.Model):
         except:
             pass
 
+    def set_status_to_tweeted_without_save(self):
+        try:
+            self.status = TweetStatus.objects.get(pk=TWEET_STATUS_PK_TWEETED)
+        except:
+            pass
 
             
     @staticmethod
@@ -79,16 +98,7 @@ class MCBTweetEvent(models.Model):
         mcb_tweet.save()
         return mcb_tweet
     
-    def view_mcb_event(self):
-        #return 'balh'
-        if not self.mcb_event:
-            return 'n/a'
-            
-        lnk = reverse('admin__events__calendarevent__change', args=(self.mcb_event.id))
-        return '<a href="%s">view event</a>' % lnk
-        
-    view_mcb_event.allow_tags = True
-    
+
     def get_full_tweet(self):
         full_tweet = assemble_full_tweet(self.tweet_text\
                                         , self.tweet_short_url\
