@@ -24,6 +24,15 @@ def is_potential_lecture(event_title):
 from mcb_twitter.tweet_mcb.tweet_event_loader import *
 #MCBTweetEvent.objects.all().delete()
 load_upcoming_tweet_events()
+
+
+for evt in MCBTweetEvent.objects.all():
+    if not evt.tweet_short_url:
+        evt.mcb_event.save()
+        if evt.mcb_event.short_url:
+            evt.tweet_short_url = evt.mcb_event.short_url
+            evt.save()
+            print 'update short url: %s' % evt.tweet_short_url
 """
 def load_upcoming_tweet_events():
     
