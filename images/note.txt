@@ -1,0 +1,19 @@
+We need 3 images for twitter with the following specs:
+
+our current page: https://twitter.com/MCB_Harvard
+
+(1) "Background Image" - The entire background.  
+Size: Varies.  Below are several sample links. 
+
+MIT News - 2000x1328 - https://twitter.com/MITnews 
+MIT Sloan School - 1910x1000 - https://twitter.com/MITSloan
+Harvard Business School - 2000x1400 - https://twitter.com/HarvardHBS
+Harvard University - 1600x2200  - https://twitter.com/Harvard
+Science - 656x497 - https://twitter.com/sciencemagazine
+New York Times - 2048x1147 -  https://twitter.com/nytimes
+
+(2) "Header" image- This is currently the gray/black background behind the shield.   
+                        Recommended dimensions of 1252×626
+
+(3) "Profile Image" - Currently the MCB shield.  This is placed "over" the (2)  "Header" image.  It can be uploaded at any size* and re-sized.
+* smaller than 1252x626
