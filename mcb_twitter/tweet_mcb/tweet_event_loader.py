@@ -1,5 +1,5 @@
 import copy
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timedelta
 
 from mcb_website.events.models import CalendarEvent
 
