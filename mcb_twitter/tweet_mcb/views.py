@@ -26,7 +26,8 @@ def view_tweet_console(request, **kwargs):
     #lu = get_common_lookup(request)
     lu = { 'page_title' : 'Send MCB Tweet'\
             , 'TWEET_SUCCESS' : kwargs.get('success_msg', False)\
-            , 'include_twitter_widget' : True
+            , 'include_twitter_widget' : True\
+            , 'IS_TWEET_CONSOLE_PAGE' : True
       }
         
     if not request.user.is_authenticated():
@@ -41,7 +42,7 @@ def view_tweet_console(request, **kwargs):
             tweet_form.send_tweet()
             return HttpResponseRedirect(reverse('view_tweet_success', args=()))
         else:
-            print 'NOT valid!'
+            #print 'NOT valid!'
             lu.update({ 'ERR_form_not_valid' : True })
     else: 
         if kwargs.has_key('title'):
@@ -49,7 +50,7 @@ def view_tweet_console(request, **kwargs):
                         , 'hashtag' : 'MCB_News'\
                         , 'link' : kwargs.get('short_url', '') \
                         }
-            print 'form_data', form_data
+            #print 'form_data', form_data
             tweet_form = TweetForm(form_data)
         else:
             tweet_form = TweetForm()

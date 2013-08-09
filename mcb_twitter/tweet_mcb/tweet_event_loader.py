@@ -39,9 +39,9 @@ def load_upcoming_tweet_events():
         mcb_tweet = MCBTweetEvent.create_tweet_from_calendar_event(cal_evt) 
         
         if is_potential_lecture(cal_evt.title):
-            print '\nYes! potential lecture: %s' % cal_evt.title
+            #print '\nYes! potential lecture: %s' % cal_evt.title
             one_week_notice_date = mcb_tweet.tweet_pubdate + timedelta(days=-7)
-            print 'one_week_notice_date: [%s] today [%s]' % (one_week_notice_date, today)
+            #print 'one_week_notice_date: [%s] today [%s]' % (one_week_notice_date, today)
             if one_week_notice_date > today:
                 mcb_tweet_copy = copy.copy(mcb_tweet)                
                 mcb_tweet_copy.tweet_pubdate = one_week_notice_date

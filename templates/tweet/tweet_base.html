@@ -48,8 +48,8 @@
           <a class="brand" href="#">mcb tweets</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="{% url 'view_tweet_console' %}">Home</a></li>
-              <li><a href="{% url 'view_event_list' %}">Event Approval List</a></li>
+              <li{% if IS_TWEET_CONSOLE_PAGE %} class="active"{% endif %}><a href="{% url 'view_tweet_console' %}">Home</a></li>
+              <li{% if IS_TWEET_EVENT_PAGE %} class="active"{% endif %}><a href="{% url 'view_event_list' %}">Event Approval List</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->

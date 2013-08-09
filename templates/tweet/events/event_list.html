@@ -11,65 +11,71 @@ a.btn{cursor:hand;}
 </style>
 <script type="text/javascript">
 
-function shorten_url(){
-    // reset error message div
-    $('#url_shorten_err_msg').html('');
-    $('#url_shorten_err_msg').hide();
-    
-    lnk_val = $('#id_link').val();
-    if (lnk_val.length == 0){
-        return;
-    }
-    if (lnk_val.length < 20){
-        alert('The url doesn\'t need shortening');
-        return;
-    }
-    
-    url_str = "{% url 'view_ajax_shorten_url' %}?lnk=" + lnk_val;
-
-    jQuery.ajax({
-      url: url_str,
-      success: function(data) {
-          if (data.success == 1){
-              //alert('new url ' + data.short_url );   
-              $('#id_link').val(data.short_url);           
-          }else{
-              $('#url_shorten_err_msg').html(data.err_msg);
-              $('#url_shorten_err_msg').show();              
+    function schedule_tweet( tweet_id, lnk_identifier){
+        
+        // hide reject button
+        $('#reject' + tweet_id).hide();
+		// unbind schedule button
+		lnk_identifier.unbind('click');
+		
+        url_str = "{% url 'view_ajax_schedule_tweet_base' %}" + tweet_id + "/";
+        jQuery.ajax({
+          url: url_str,
+          success: function(data) {
+              if (data.status == 1){ // schedule succeeeded
+                  lnk_identifier.text(data.msg);
+                  lnk_identifier.removeClass('btn-info');
+                  lnk_identifier.addClass('btn-success');
+              }else{    // schedule failed              
+                  lnk_identifier.text(data.msg);
+                  lnk_identifier.removeClass('btn-success');
+                  lnk_identifier.addClass('btn-warning');
+              }
           }
-      }
-    })
-}
+        })
+    }   // end schedule_tweet
+
+    function reject_tweet( tweet_id, lnk_identifier){
+       
+        $('#schedule' + tweet_id).hide();  // hide schedule button
+		
+		lnk_identifier.unbind('click');     // unbind reject button
+		
+		// Make ajax call
+        url_str = "{% url 'view_ajax_reject_tweet_base' %}" + tweet_id + "/";
+        jQuery.ajax({
+          url: url_str,
+          success: function(data) {
+              if (data.status == 1){ // reject succeeeded
+                  lnk_identifier.text(data.msg);
+                  lnk_identifier.removeClass('btn-warning');
+                  lnk_identifier.addClass('btn-inverse');
+              }else{    // reject failed              
+                  lnk_identifier.text(data.msg);
+                  lnk_identifier.removeClass('btn-warning');
+                  lnk_identifier.addClass('btn-danger');
+              }
+          }
+        })
+    }   // end reject_tweet
 
 
 
     $(function () {
     
+        // Click schedule tweet
         $('a.schedule-tweet').click(function(){
-      			evt_row_info = this.rel.split('|');
-      			msg = "event: " + evt_row_info[0] + "   row: " +  evt_row_info[1];
-      			$(this).text(msg);
-      			$('#reject' + evt_row_info[0]).hide();
-      			$(this).unbind('click');
-      		});
+      		evt_row_info = this.rel.split('|');
+      		//msg = "event: " + evt_row_info[0] + "   row: " +  evt_row_info[1];
+      		//$(this).text(msg);                
+      			schedule_tweet(evt_row_info[0], $(this));
+		});
 
+        // Click reject tweet
         $('a.reject-tweet').click(function(){
       			evt_row_info = this.rel.split('|');
-      			msg = "bummer... event: " + evt_row_info[0] + "   row: " +  evt_row_info[1];
-      			$(this).text(msg);
-      			
-      			$('#schedule' + evt_row_info[0]).hide();
-      			$(this).unbind('click');
-      			
-      		});
-        
-
-        /*$('a#lnk_shorten_url').click(function(){
-            shorten_url();
-        })
-        
-        $('#url_shorten_err_msg').hide();
-        */
+      			reject_tweet( evt_row_info[0], $(this));      		
+      	});
    });
 
 </script>
@@ -78,7 +84,14 @@ function shorten_url(){
 
 {% block main_container %}
 <div id="id_tweet_msg"></div>
+{% if not upcoming_events %}
+<div class="alert alert-info">
+   Any upcoming calendar events have already been scheduled.
+</div>
+{% endif %}
+
 {% if upcoming_events %}
+    <strong>{{ upcoming_events|length }} event{{ upcoming_events|length|pluralize }} found.</strong>
     <table class="table table-bordered table-hover" style="width:650px;" id="id_tbl_evt_list">
         <thead>
             <tr>
@@ -97,8 +110,8 @@ function shorten_url(){
                     <br />{{ event.tweet_pubdate|date:"f:s a" }}
                     </td>
                 <td>{{ event.tweet_text }}</td>
-                <td><a id="schedule{{ event.id }}" rel="{{ event.id }}|row_{{ forloop.counter }}" class="btn btn-small btn-success schedule-tweet">Schedule</a></td>
-                <td><a id="reject{{ event.id }}" rel="{{ event.id }}|row_{{ forloop.counter }}" class="btn btn-small btn-danger reject-tweet">Reject</a></td>
+                <td><a id="schedule{{ event.id }}" rel="{{ event.id }}|row_{{ forloop.counter }}" class="btn btn-small btn-info schedule-tweet">Schedule Tweet</a></td>
+                <td><a id="reject{{ event.id }}" rel="{{ event.id }}|row_{{ forloop.counter }}" class="btn btn-small btn-warning reject-tweet">Reject Tweet</a></td>
             </tr>
         </tbody>
     {% endfor %}

@@ -45,6 +45,20 @@ class MCBTweetEvent(models.Model):
     
     full_tweet = models.CharField(max_length=255, blank=True, help_text='auto-filled on save')
     
+    def approve_tweet_without_save(self):
+        try:
+            self.status = TweetStatus.objects.get(pk=TWEET_STATUS_PK_APPROVED)
+        except:
+            pass
+            
+    def reject_tweet_without_save(self):
+        try:
+            self.status = TweetStatus.objects.get(pk=TWEET_STATUS_PK_REJECTED)
+        except:
+            pass
+
+
+            
     @staticmethod
     def get_events_awaiting_approval():
         return MCBTweetEvent.objects.filter(tweet_pubdate__gt=datetime.now()\

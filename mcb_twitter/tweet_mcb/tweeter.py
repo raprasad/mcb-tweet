@@ -41,10 +41,10 @@ def post_new_tweet(new_tweet):
     Check it out. short_url #harvard"""
     if len(new_tweet) <= 140:
         tweet_conn.statuses.update( status = "%s" % new_tweet)
-        print 'status updated: %s' % new_tweet
+        #print 'status updated: %s' % new_tweet
         return True
     else: 
-        print "Status cannot be over 140 characters."
+        #print "Status cannot be over 140 characters."
         return False
         
 if __name__=='__main__':

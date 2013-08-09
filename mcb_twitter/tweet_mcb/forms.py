@@ -55,7 +55,7 @@ class TweetForm(forms.Form):
         if full_msg is None:
             raise forms.ValidationError("Please enter at least a message and a hashtag.")
             
-        print 'len(full_msg)', len(full_msg) 
+        #print 'len(full_msg)', len(full_msg) 
         if len(full_msg) > MAX_TWEET_SIZE:
             err_msg = 'Please reduce the length of your message, hashtag or link'
             self._errors['message'] = self.error_class([err_msg])
