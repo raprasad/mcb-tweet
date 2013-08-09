@@ -87,6 +87,12 @@ class MCBTweetEvent(models.Model):
     
     @staticmethod
     def create_tweet_from_calendar_event(cal_event):
+        if cal_event is None:
+            return None
+            
+        if not cal_event.short_url:
+            cal_event.save()
+        
         status_awaiting_approval = TweetStatus.objects.get(pk=TWEET_STATUS_PK_AWAITING_APPROVAL)
         mcb_tweet = MCBTweetEvent(mcb_event=cal_event\
                                 , status=status_awaiting_approval\
