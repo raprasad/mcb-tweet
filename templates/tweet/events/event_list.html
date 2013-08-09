@@ -110,7 +110,7 @@ a.btn{cursor:hand;}
                     <br />{{ event.tweet_pubdate|date:"f:s a" }}
                     </td>
                 <td>{{ event.full_tweet }}
-                    <br />
+                    <br /><a href="{% url 'admin:tweet_mcb_mcbtweetevent_change' event.id  %}">edit</a>
                     </td>
                 <td><a id="schedule{{ event.id }}" rel="{{ event.id }}|row_{{ forloop.counter }}" class="btn btn-small btn-info schedule-tweet">Schedule Tweet</a></td>
                 <td><a id="reject{{ event.id }}" rel="{{ event.id }}|row_{{ forloop.counter }}" class="btn btn-small btn-warning reject-tweet">Reject Tweet</a></td>
