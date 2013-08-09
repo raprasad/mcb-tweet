@@ -1,5 +1,5 @@
 import copy
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time
 
 from mcb_website.events.models import CalendarEvent
 
@@ -67,9 +67,13 @@ from mcb_twitter.tweet_mcb.tweet_event_loader import *
 send_daily_tweets()
 """        
 def send_daily_tweets():
+    
     today = date.today()
-        
-    kwargs = { 'tweet_pubdate__gte' : today\
+    start_time = datetime.combine(date.today(), time.min)
+    end_time = datetime.combine(date.today(), time.max)
+
+    kwargs = {  'tweet_pubdate__gte' : start_time\
+                , 'tweet_pubdate__lte' : end_time\
                 , 'status__id' : TWEET_STATUS_PK_APPROVED
             }
     todays_tweets = MCBTweetEvent.objects.filter(**kwargs)
