@@ -53,9 +53,10 @@ def load_upcoming_tweet_events():
     #           - 1 for a week before the event day
     #
     new_tweet_cnt = 0
-    
+    new_tweets = []
     for cal_evt in events_to_add:
         mcb_tweet = MCBTweetEvent.create_tweet_from_calendar_event(cal_evt) 
+        new_tweets.append(mcb_tweet)
         new_tweet_cnt +=1
         if is_potential_lecture(cal_evt.title) or is_potential_lecture(cal_evt.description):
             #print '\nYes! potential lecture: %s' % cal_evt.title
@@ -67,9 +68,11 @@ def load_upcoming_tweet_events():
                 mcb_tweet_copy.tweet_text = 'Next Week! %s' % mcb_tweet.tweet_text[:129]
                 mcb_tweet_copy.id = None
                 mcb_tweet_copy.save()
+                new_tweets.append(mcb_tweet_copy)
+                
                 new_tweet_cnt+=1
                 print 'new text: %s' % mcb_tweet_copy.tweet_text
-    return new_tweet_cnt
+    return new_tweets
     
 """
 from mcb_twitter.tweet_mcb.tweet_event_loader import *
