@@ -50,7 +50,7 @@ def post_new_tweet(new_tweet):
 if __name__=='__main__':
     description = 'Hopi Hoekstra Appointed HHMI Investigator'
     long_url = 'https://www.mcb.harvard.edu/mcb/news/news-detail/3669/how-does-e-coli-segregate-its-sisters-without-a-spindle-kleckner-lab/'
-    hashtag = "MCB_News"
+    hashtag = "#MCB_News"
     #short_url = shorten_url(long_url)
     short_url = 'http://goo.gl/TIYIg'
     post_new_tweet_as_parts(description, short_url, hashtag)

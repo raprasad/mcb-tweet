@@ -47,7 +47,7 @@ def view_tweet_console(request, **kwargs):
     else: 
         if kwargs.has_key('title'):
             form_data = { 'message': kwargs.get('title', '')\
-                        , 'hashtag' : 'MCB_News'\
+                        , 'hashtag' : '#MCB_News'\
                         , 'link' : kwargs.get('short_url', '') \
                         }
             #print 'form_data', form_data
