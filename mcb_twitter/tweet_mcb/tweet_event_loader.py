@@ -34,17 +34,25 @@ for evt in MCBTweetEvent.objects.all():
             evt.save()
             print 'update short url: %s' % evt.tweet_short_url
 """
+
+def delete_tweets_of_removed_future_events():
+    pass
+    #today = datetime.now()
+
+    #loaded_event_ids_of_tweet = MCBTweetEvent.objects.values_list('mcb_event__google_id', flat=True).all()
+
 def load_upcoming_tweet_events():
     
-    # so we don't reload events
-    loaded_event_ids_of_tweet = MCBTweetEvent.objects.values_list('mcb_event__id', flat=True).all()
     
+    # so we don't reload events
+    loaded_tweet_google_ids = MCBTweetEvent.objects.values_list('google_id', flat=True).exclude(google_id='')
+    print 'loaded_tweet_google_ids', loaded_tweet_google_ids
     # retrieve new future events
     today = datetime.now()
     
     events_to_add = CalendarEvent.objects.filter(start_time__gte=today\
                             , visible=True\
-                        ).exclude(id__in=loaded_event_ids_of_tweet)
+                        ).exclude(google_id__in=loaded_tweet_google_ids)
     
     # process events: 
     #  - Iterate through upcoming CalendarEvent objects and create MCBTweetEvent objects

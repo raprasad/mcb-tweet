@@ -32,6 +32,7 @@ class MCBTweetEvent(models.Model):
     Pre-load CalendarEvents for tweeting
     """
     mcb_event = models.ForeignKey(CalendarEvent, verbose_name='MCB Event')
+
     tweet_text = models.CharField(max_length=140)
     status = models.ForeignKey(TweetStatus)
     
@@ -45,6 +46,8 @@ class MCBTweetEvent(models.Model):
     
     full_tweet = models.CharField(max_length=255, blank=True, help_text='auto-filled on save')
 
+    google_id = models.CharField(max_length=255, blank=True, db_index=True)
+    
     def view_calendar_event(self):
         if not self.mcb_event:
             return 'n/a'
@@ -98,7 +101,8 @@ class MCBTweetEvent(models.Model):
                                 , status=status_awaiting_approval\
                                 , tweet_text=cal_event.title[:140]\
                                 , tweet_pubdate=cal_event.start_time\
-                                , tweet_short_url = cal_event.short_url\
+                                , tweet_short_url=cal_event.short_url\
+                                , google_id=cal_event.google_id\
                                 )
             
         mcb_tweet.save()

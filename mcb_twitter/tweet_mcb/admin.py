@@ -40,8 +40,8 @@ class MCBTweetEventAdmin(admin.ModelAdmin):
     actions = [approve_tweet, reject_tweet, set_to_awaiting_approval]
     form = TweetAdminForm
     save_on_top = True
-    search_fields = ('tweet_text', 'status__name' )
-    list_display = ('tweet_text', 'status', 'tweet_pubdate',  'approved','reject_tweet', 'tweet_tag_text' )
+    search_fields = ('tweet_text', 'status__name', 'google_id')
+    list_display = ('tweet_text', 'status', 'tweet_pubdate',  'approved','reject_tweet', 'tweet_tag_text', 'google_id', )
     list_filter = ('status', 'tweet_tag_text')
     readonly_fields = ('reject_tweet', 'approved', 'full_tweet', 'view_calendar_event',)
     
