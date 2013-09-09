@@ -45,7 +45,7 @@ def load_upcoming_tweet_events():
     
     
     # so we don't reload events
-    loaded_tweet_google_ids = MCBTweetEvent.objects.values_list('google_id', flat=True).exclude(google_id='')
+    #loaded_tweet_google_ids = MCBTweetEvent.objects.values_list('google_id', flat=True).exclude(google_id='')
     print 'loaded_tweet_google_ids', loaded_tweet_google_ids
     # retrieve new future events
     today = datetime.now()
