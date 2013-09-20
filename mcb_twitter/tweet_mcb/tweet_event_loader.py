@@ -102,6 +102,7 @@ def send_daily_tweets():
     cnt =0 
     for tweet_event in todays_tweets:
         cnt+=1
+        print '(%s) sending tweet id:%s - %s' % (cnt, tweet_event.id, tweet_event)
         post_new_tweet(tweet_event.full_tweet)
         tweet_event.set_status_to_tweeted_without_save()
         tweet_event.save()
