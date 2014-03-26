@@ -6,15 +6,94 @@ import json
 from twitter import Twitter, NoAuth, OAuth, read_token_file, TwitterHTTPError
 
 # https://github.com/sixohsix/twitter/blob/master/tests/test_sanity.py
+MAX_TWEET_LENGTH = 140
+
+def shorten_tweet_to_fit_url_and_tag(title, max_length=MAX_TWEET_LENGTH, add_ellipsis=False):
+    """
+    Shorten the title to a target length.
+    Example:
+        tag length: 10      '#MCB_Event'
+        link length: 20     'http://goo.gl/sTbpGG'
+        spacing between title/link/tag = 2
+        
+        title max length: 140 - (10 + 20 + 2) = 108
+    """
+    if title is None:
+        return None
+            
+    if len(title) <= max_length:
+        return title
+    
+    ellipsis_str = '...'
+    
+    if add_ellipsis:
+        max_length = max_length - 3
+        
+    # trim last words from title
+    tparts = title.split()
+    if len(tparts) == 1:       # Is it contiguous characters?  Yes, truncate it
+        if add_ellipsis:
+            return title[:max_length] + ellipsis_str
+        return title[:max_length]
+    
+    # Try pulling off the end words, until target length reaached
+    #   example: "cow jumped over the moon"
+    #               length: 24; target length: 16
+    #       "cow jumped over the moon" - nope
+    #       "cow jumped over the" - nope, length 19
+    #       "cow jumped over" - YES, length 15; 15<=16     
+    ""   
+    for idx in range(1, len(tparts)):
+        shortened_title = ' '.join(tparts[0:-idx])  
+        if len(shortened_title) <= max_length:
+            if add_ellipsis:
+                return shortened_title + ellipsis_str
+            return shortened_title
+            
+    # should never reach here
+    return title[:max_length]  
+
 
 def assemble_full_tweet(description, short_url='', hashtag=''):
+    """
+    Shorten tweet to 140 characters.
+    """
     parts = [description, short_url, hashtag]
+        
     parts = filter(lambda x: x is not None and len(x.strip())>0, parts)
     if len(parts) == 0:
         return None
+    
     parts = map(lambda x: x.strip(), parts)
     
-    full_tweet = ' '.join(parts)
+    if len(parts) == 1:
+        updated_description = shorten_tweet_to_fit_url_and_tag(\
+                                        parts[0]\
+                                      , MAX_TWEET_LENGTH)
+        return updated_description
+        
+    num_spaces_between_parts = len(parts) - 1
+    non_description_length = len(''.join(parts[1:])) + num_spaces_between_parts
+    
+    # Are the links, hashtags too long?  Then start dropping them
+    if non_description_length > (MAX_TWEET_LENGTH/2):
+        while len(parts) > 1:
+            parts.pop()
+            num_spaces_between_parts = len(parts) - 1
+            non_description_length = len(''.join(parts[1:])) + num_spaces_between_parts
+            if non_description_length <= (MAX_TWEET_LENGTH/2):
+                break
+                
+    max_description_length = MAX_TWEET_LENGTH - non_description_length
+
+    updated_description = shorten_tweet_to_fit_url_and_tag(parts[0]\
+                                    , max_description_length\
+                                    , add_ellipsis=True)
+    
+    if len(parts) == 1:
+        return updated_description
+        
+    full_tweet = updated_description + ' ' + ' '.join(parts[1:])
     
     return full_tweet
     
